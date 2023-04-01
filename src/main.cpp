@@ -1,47 +1,18 @@
 #include <sdk/SexySDK.hpp> //for deluxe
-#include <sdk/SexyNightsSDK.hpp> //for nights
 #include <MinHook.h>
+
+static void (__fastcall* Sexy__Board__LoadLevel2_)(Sexy::Board*, char*, std::string*);
+void __fastcall Sexy__Board__LoadLevel2(Sexy::Board* this_, char* edx, std::string* level_name)
+{
+	std::string next_level = "levels/doublehelix.dat";
+	return Sexy__Board__LoadLevel2_(this_, edx, &next_level);
+}
 
 void init()
 {
 	MH_Initialize();
 
-	//Some useful callbacks
-	//Check out callbacks.hpp in the respective game's sdk for more!
-
-	//Deluxe
-	Sexy::callbacks::on(Sexy::callbacks::type::begin_turn_2, []()
-	{
-	});
-
-	Sexy::callbacks::on(Sexy::callbacks::type::do_level_done, []()
-	{
-	});
-
-	Sexy::callbacks::on(Sexy::callbacks::type::do_to_menu, []()
-	{
-	});
-
-	Sexy::callbacks::on(Sexy::callbacks::type::main_loop, []()
-	{
-	});
-
-	//Nights
-	SexyNights::callbacks::on(SexyNights::callbacks::type::begin_turn_2, []()
-	{
-	});
-
-	SexyNights::callbacks::on(SexyNights::callbacks::type::do_level_done, []()
-	{
-	});
-
-	SexyNights::callbacks::on(SexyNights::callbacks::type::do_to_menu, []()
-	{
-	});
-
-	SexyNights::callbacks::on(SexyNights::callbacks::type::main_loop, []()
-	{
-	});
+	MH_CreateHook((void*)0x00429D10, Sexy__Board__LoadLevel2, (void**)&Sexy__Board__LoadLevel2_);
 
 	MH_EnableHook(MH_ALL_HOOKS);
 }
